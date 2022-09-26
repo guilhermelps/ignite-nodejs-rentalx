@@ -1,5 +1,5 @@
 import { sign, verify } from "jsonwebtoken";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
 import auth from "../../../../config/auth";
 import { IDateProvider } from "../../../../shared/container/providers/DateProvider/IDateProvider";
@@ -11,6 +11,7 @@ interface IPayload {
   email: string;
 }
 
+@injectable()
 class RefreshTokenUseCase {
   constructor(
     @inject("UsersTokensRepository")
@@ -34,6 +35,7 @@ class RefreshTokenUseCase {
       throw new AppError("Refresh Token does not exists!");
     }
 
+    console.log(userToken.id);
     await this.usersTokensRepository.deleteById(userToken.id);
 
     const refresh_token = sign({ email }, auth.secret_refresh_token, {
