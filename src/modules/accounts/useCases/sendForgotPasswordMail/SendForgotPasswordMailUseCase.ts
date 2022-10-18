@@ -52,6 +52,8 @@ class SendForgotPasswordMailUseCase {
       link: `${process.env.FORGOT_MAIL_URL}${token}`,
     };
 
+    console.log(variables.link);
+
     await this.mailProvider.sendMail(
       email,
       "Recuperação de senha",

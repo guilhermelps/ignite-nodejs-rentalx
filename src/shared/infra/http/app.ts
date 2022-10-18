@@ -9,11 +9,14 @@ import upload from "../../../config/upload";
 import swaggerFile from "../../../swagger.json";
 import { AppError } from "../../errors/AppError";
 import createConnection from "../typeorm";
+import rateLimiter from "./middlewares/rateLimiter";
 import { router } from "./routes";
 import "../../container";
 
 createConnection();
 const app = express();
+
+app.use(rateLimiter);
 
 app.use(express.json());
 
@@ -24,8 +27,6 @@ app.use("/cars", express.static(`${upload.tmpFolder}/cars`));
 
 app.use(cors());
 app.use(router);
-
-console.log("teste");
 
 app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {
